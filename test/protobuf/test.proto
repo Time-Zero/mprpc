@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+package fixbug;
+
+// 定义下面的选项，表示生成service服务类和rpc方法描述,如果不指定，默认不生成
+option cc_generic_services = true;
+
+message ResultCode
+{
+    int32 errcode = 1;
+    bytes errmsg = 2;
+}
+
+
+// 登录请求方法
+message LoginRequest
+{
+    bytes name = 1;         // 在protobuf中，字符串建议存储为bytes,直接使用二进制存储，减少转换带来的问题
+    bytes pwd = 2;
+}
+
+// 登录响应方法
+message LoginResponse
+{
+    ResultCode result = 1;
+    bool success = 2;
+}
+
+message GetFriendListsRequest
+{
+    uint32 userid = 1;
+}
+
+message User{
+    bytes name = 1;
+    uint32 age = 2;
+
+    enum Sex
+    {
+        Man = 0;
+        WOMAN = 1;
+    }
+    
+    Sex sex = 3;
+}
+
+message GetFriendListsResponse
+{
+    ResultCode result = 1;
+    repeated User friend_list = 2;            // repeated 意思就是重复，返回的就是列表类型
+}
+
+// protobuf中定义描述rpc方法的类型
+service UserServiceRpc
+{
+    rpc Login(LoginRequest) returns(LoginResponse);         // 请求方法和对应的响应方法
+    rpc GetFriendLists(GetFriendListsRequest) returns(GetFriendListsResponse);
+}
