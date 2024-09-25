@@ -1,5 +1,3 @@
-# 将本目录下的所有源文件放入SRC_LIST变量中
 aux_source_directory(. SRC_LIST)
-
-# 声明利用这些源文件生成动态库mprpc
-add_library(mprpc SHARED ${SRC_LIST})
+add_library(mprpc ${SRC_LIST})
+target_link_libraries(mprpc muduo_net muduo_base pthread)

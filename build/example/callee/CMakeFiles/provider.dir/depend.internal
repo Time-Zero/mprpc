@@ -6,6 +6,7 @@ example/callee/CMakeFiles/provider.dir/__/user.pb.cc.o
  /home/ymc/mprpc/example/user.pb.h
 example/callee/CMakeFiles/provider.dir/userservice.cc.o
  ../src/include/mprpcapplication.h
+ ../src/include/mprpcconfig.h
  ../src/include/rpcprovider.h
  /home/ymc/mprpc/example/callee/userservice.cc
  /home/ymc/mprpc/example/user.pb.h

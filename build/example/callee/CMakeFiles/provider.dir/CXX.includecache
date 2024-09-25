@@ -7,10 +7,28 @@
 #IncludeRegexTransform: 
 
 ../src/include/mprpcapplication.h
+mprpcconfig.h
+../src/include/mprpcconfig.h
+
+../src/include/mprpcconfig.h
+unordered_map
+-
+string
+-
 
 ../src/include/rpcprovider.h
 google/protobuf/service.h
 ../src/include/google/protobuf/service.h
+memory
+-
+muduo/net/TcpServer.h
+-
+muduo/net/EventLoop.h
+-
+muduo/net/InetAddress.h
+-
+muduo/net/TcpConnection.h
+-
 
 /home/ymc/mprpc/example/callee/userservice.cc
 iostream
