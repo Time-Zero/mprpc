@@ -19,8 +19,6 @@ string
 ../src/include/rpcprovider.h
 google/protobuf/service.h
 ../src/include/google/protobuf/service.h
-memory
--
 muduo/net/TcpServer.h
 -
 muduo/net/EventLoop.h
@@ -28,6 +26,16 @@ muduo/net/EventLoop.h
 muduo/net/InetAddress.h
 -
 muduo/net/TcpConnection.h
+-
+google/protobuf/descriptor.h
+-
+thread
+-
+functional
+-
+string
+-
+unordered_map
 -
 
 /home/ymc/mprpc/example/callee/userservice.cc
@@ -41,30 +49,6 @@ mprpcapplication.h
 /home/ymc/mprpc/example/callee/mprpcapplication.h
 rpcprovider.h
 /home/ymc/mprpc/example/callee/rpcprovider.h
-
-/home/ymc/mprpc/example/user.pb.cc
-user.pb.h
-/home/ymc/mprpc/example/user.pb.h
-algorithm
--
-google/protobuf/io/coded_stream.h
--
-google/protobuf/extension_set.h
--
-google/protobuf/wire_format_lite.h
--
-google/protobuf/descriptor.h
--
-google/protobuf/generated_message_reflection.h
--
-google/protobuf/reflection_ops.h
--
-google/protobuf/wire_format.h
--
-google/protobuf/port_def.inc
--
-google/protobuf/port_undef.inc
--
 
 /home/ymc/mprpc/example/user.pb.h
 limits

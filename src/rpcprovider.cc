@@ -1,10 +1,32 @@
 #include "rpcprovider.h"
 #include "mprpcapplication.h"
-#include <thread>
-#include <functional>
+
 
 void RpcProvider::NotifyService(::google::protobuf::Service *service)
 {
+    ServiceInfo service_info;
+
+    // 获取服务对象的描述
+    const google::protobuf::ServiceDescriptor* p_serviceDesc = service->GetDescriptor();
+    // 获取服务名
+    std::string service_name = p_serviceDesc->name();
+    // 获取服务对象service方法的数量
+    int methodCnt = p_serviceDesc->method_count();
+
+    // std::cout << service_name << std::endl;
+
+    // 遍历来获取service中的method
+    for(int i = 0; i < methodCnt; i++)
+    {
+        // 获取了服务对象执行下标的服务方法的描述 (抽象描述)
+        const google::protobuf::MethodDescriptor* p_methodDesc = p_serviceDesc->method(i);
+        std::string method_name = p_methodDesc->name();
+
+        // std::cout << method_name << std::endl;
+        service_info.m_methodMap.insert({method_name, p_methodDesc});
+    }
+    service_info.m_service;
+    m_serviceMap_.insert({service_name, service_info});
 }
 
 void RpcProvider::Run()

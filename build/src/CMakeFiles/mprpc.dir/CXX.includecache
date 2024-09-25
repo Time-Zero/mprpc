@@ -19,8 +19,6 @@ string
 ../src/include/rpcprovider.h
 google/protobuf/service.h
 ../src/include/google/protobuf/service.h
-memory
--
 muduo/net/TcpServer.h
 -
 muduo/net/EventLoop.h
@@ -29,14 +27,20 @@ muduo/net/InetAddress.h
 -
 muduo/net/TcpConnection.h
 -
+google/protobuf/descriptor.h
+-
+thread
+-
+functional
+-
+string
+-
+unordered_map
+-
 
 /home/ymc/mprpc/src/rpcprovider.cc
 rpcprovider.h
 /home/ymc/mprpc/src/rpcprovider.h
 mprpcapplication.h
 /home/ymc/mprpc/src/mprpcapplication.h
-thread
--
-functional
--
 
