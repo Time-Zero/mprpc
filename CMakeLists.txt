@@ -9,8 +9,12 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 # 设置项目编译头文件搜索路径
 include_directories(${PROJECT_SOURCE_DIR}/src/include)
 include_directories(${PROJECT_SOURCE_DIR}/example)
+
 # 设置项目库文件搜索路径
 link_directories(${PROJECT_SOURCE_DIR}/lib)
 
+
+# 框架源代码
 add_subdirectory(${PROJECT_SOURCE_DIR}/src)
-# add_subdirectory(${PROJECT_SOURCE_DIR}/example)
+# 框架实例代码
+add_subdirectory(${PROJECT_SOURCE_DIR}/example)

@@ -2,6 +2,7 @@
 
 void MprpcApplication::Init(int argc, char **argv)
 {
+    
 }
 
 MprpcApplication &MprpcApplication::GetInstance()

@@ -1,0 +1,22 @@
+[
+{
+  "directory": "/home/ymc/mprpc/build/src",
+  "command": "/usr/bin/g++  -Dmprpc_EXPORTS -I/home/ymc/mprpc/src/include -I/home/ymc/mprpc/example  -g -fPIC   -o CMakeFiles/mprpc.dir/mprpcapplication.cc.o -c /home/ymc/mprpc/src/mprpcapplication.cc",
+  "file": "/home/ymc/mprpc/src/mprpcapplication.cc"
+},
+{
+  "directory": "/home/ymc/mprpc/build/src",
+  "command": "/usr/bin/g++  -Dmprpc_EXPORTS -I/home/ymc/mprpc/src/include -I/home/ymc/mprpc/example  -g -fPIC   -o CMakeFiles/mprpc.dir/rpcprovider.cc.o -c /home/ymc/mprpc/src/rpcprovider.cc",
+  "file": "/home/ymc/mprpc/src/rpcprovider.cc"
+},
+{
+  "directory": "/home/ymc/mprpc/build/example/callee",
+  "command": "/usr/bin/g++   -I/home/ymc/mprpc/src/include -I/home/ymc/mprpc/example  -g   -o CMakeFiles/provider.dir/userservice.cc.o -c /home/ymc/mprpc/example/callee/userservice.cc",
+  "file": "/home/ymc/mprpc/example/callee/userservice.cc"
+},
+{
+  "directory": "/home/ymc/mprpc/build/example/callee",
+  "command": "/usr/bin/g++   -I/home/ymc/mprpc/src/include -I/home/ymc/mprpc/example  -g   -o CMakeFiles/provider.dir/__/user.pb.cc.o -c /home/ymc/mprpc/example/user.pb.cc",
+  "file": "/home/ymc/mprpc/example/user.pb.cc"
+}
+]
