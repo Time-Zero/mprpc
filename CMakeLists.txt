@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.10)
 project(mprpc)
 
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 # 生成Debug版本可以进行gdb调试
 set(CMAKE_BUILD_TYPE "Debug")
 

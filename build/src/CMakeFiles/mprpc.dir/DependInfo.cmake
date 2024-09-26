@@ -6,6 +6,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_CHECK_CXX
   "/home/ymc/mprpc/src/mprpcapplication.cc" "/home/ymc/mprpc/build/src/CMakeFiles/mprpc.dir/mprpcapplication.cc.o"
   "/home/ymc/mprpc/src/mprpcconfig.cc" "/home/ymc/mprpc/build/src/CMakeFiles/mprpc.dir/mprpcconfig.cc.o"
+  "/home/ymc/mprpc/src/rpcheader.pb.cc" "/home/ymc/mprpc/build/src/CMakeFiles/mprpc.dir/rpcheader.pb.cc.o"
   "/home/ymc/mprpc/src/rpcprovider.cc" "/home/ymc/mprpc/build/src/CMakeFiles/mprpc.dir/rpcprovider.cc.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")

@@ -8,8 +8,12 @@ src/CMakeFiles/mprpc.dir/mprpcapplication.cc.o
 src/CMakeFiles/mprpc.dir/mprpcconfig.cc.o
  ../src/include/mprpcconfig.h
  /home/ymc/mprpc/src/mprpcconfig.cc
+src/CMakeFiles/mprpc.dir/rpcheader.pb.cc.o
+ /home/ymc/mprpc/src/rpcheader.pb.cc
+ /home/ymc/mprpc/src/rpcheader.pb.h
 src/CMakeFiles/mprpc.dir/rpcprovider.cc.o
  ../src/include/mprpcapplication.h
  ../src/include/mprpcconfig.h
  ../src/include/rpcprovider.h
+ /home/ymc/mprpc/src/rpcheader.pb.h
  /home/ymc/mprpc/src/rpcprovider.cc
