@@ -13,7 +13,7 @@ void RpcProvider::NotifyService(::google::protobuf::Service *service)
     // 获取服务对象service方法的数量
     int methodCnt = p_serviceDesc->method_count();
 
-    // std::cout << service_name << std::endl;
+    // std::cout << "Notify Service: " << service << std::endl;
 
     // 遍历来获取service中的method
     for (int i = 0; i < methodCnt; i++)
@@ -22,10 +22,11 @@ void RpcProvider::NotifyService(::google::protobuf::Service *service)
         const google::protobuf::MethodDescriptor *p_methodDesc = p_serviceDesc->method(i);
         std::string method_name = p_methodDesc->name();
 
+        // std::cout << "Notify method: " << p_methodDesc << std::endl;
         // std::cout << method_name << std::endl;
         service_info.m_methodMap.insert({method_name, p_methodDesc});
     }
-    service_info.m_service;
+    service_info.m_service = service;
     m_serviceMap_.insert({service_name, service_info});
 }
 
@@ -119,16 +120,20 @@ void RpcProvider::OnMessage(const muduo::net::TcpConnectionPtr &conn, muduo::net
         return;
     }
 
-    auto mit = it->second.m_methodMap.find(method_name);
-    if (mit == it->second.m_methodMap.end())
+    ServiceInfo service_info = m_serviceMap_[service_name];
+    auto mit = service_info.m_methodMap.find(method_name);
+    if (mit == service_info.m_methodMap.end())
     {
         // 请求的方法不存在
         std::cout << service_name << " : " << method_name << " is not exist!" << std::endl;
         return;
     }
 
-    ::google::protobuf::Service *service = it->second.m_service;
-    const ::google::protobuf::MethodDescriptor *method = mit->second;
+    ::google::protobuf::Service *service = service_info.m_service;
+    const ::google::protobuf::MethodDescriptor *method = service_info.m_methodMap[method_name];
+
+    // std::cout << "OnMessage Service: " << service << std::endl;
+    // std::cout << "OnMessage Mehotd: " << method << std::endl;
 
     // 生成rpc方法调用的request和响应response参数
     ::google::protobuf::Message *request = service->GetRequestPrototype(method).New();

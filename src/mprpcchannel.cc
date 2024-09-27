@@ -49,7 +49,7 @@ void MprpcChannel::CallMethod(const ::google::protobuf::MethodDescriptor *method
 
     // 组织待发送的rpc请求的字符串
     std::string rpc_send_str;
-    rpc_send_str.insert(0, std::string((char*)&header_size), 4);        // 前四个字节存放请求头长度
+    rpc_send_str.insert(0, std::string((char*)&header_size, 4));        // 前四个字节存放请求头长度
     rpc_send_str += rpc_header_str;                                     // 请求头信息
     rpc_send_str += args_str;                                           // 参数
     

@@ -24,14 +24,7 @@ int main(int argc, char **argv)
     // 一次rpc调用完成，读取调用的结果
     if(response.result().errcode() == 0)
     {
-        if(response.success())
-        {
-            std::cout << "rpc login success !" << std::endl;
-        }
-        else
-        {
-            std::cout << "rpc login failed !" << std::endl;
-        }
+        std::cout << "rpc login response success: " << response.success() << std::endl;
     }
     else
     {
