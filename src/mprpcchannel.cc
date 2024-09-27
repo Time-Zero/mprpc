@@ -69,7 +69,7 @@ void MprpcChannel::CallMethod(const ::google::protobuf::MethodDescriptor *method
     if (client_fd == -1)
     {
         std::stringstream ss;
-        ss << "create socket error, errno: " << errno << std::endl;
+        ss << "create socket error, errno: " << errno;
         controller->SetFailed(ss.str());
         return;
     }
@@ -89,7 +89,7 @@ void MprpcChannel::CallMethod(const ::google::protobuf::MethodDescriptor *method
         close(client_fd);
 
         std::stringstream ss;
-        ss << "connect error ! error: " << errno << std::endl;
+        ss << "connect error ! error: " << errno;
         controller->SetFailed(ss.str());
         return;
     }
@@ -100,7 +100,7 @@ void MprpcChannel::CallMethod(const ::google::protobuf::MethodDescriptor *method
         close(client_fd);
 
         std::stringstream ss;
-        ss << "send error! errno: " << errno << std::endl;
+        ss << "send error! errno: " << errno;
         controller->SetFailed(ss.str());
         return;
     }
@@ -113,7 +113,7 @@ void MprpcChannel::CallMethod(const ::google::protobuf::MethodDescriptor *method
         close(client_fd);
 
         std::stringstream ss;
-        ss << "recv error! errno: " << errno << std::endl;
+        ss << "recv error! errno: " << errno;
         controller->SetFailed(ss.str());
         return;
     }
@@ -124,7 +124,7 @@ void MprpcChannel::CallMethod(const ::google::protobuf::MethodDescriptor *method
         close(client_fd);
 
         std::stringstream ss;
-        ss << "parse error! response_str: " << recv_buf << std::endl;
+        ss << "parse error! response_str: " << recv_buf;
         controller->SetFailed(ss.str());
         return;
     }
