@@ -38,6 +38,7 @@ void MprpcConfig::LoadConfigFile(const char *config_file)
         Trim(value);
         m_configMap_.insert({key, value});
     }
+
 }
 
 std::string MprpcConfig::Load(const std::string &key)
