@@ -22,11 +22,18 @@ public:
         return true;
     }
 
+    bool Register(uint32_t id, std::string name, std::string pwd)
+    {
+        std::cout << "doing local service: Regsiter" << std::endl;
+        std::cout << "id: " << id << " name: " << name << " pwd: " << pwd << std::endl;
+        return false;
+    }
+
     // Rpc服务提供者应该响应的服务
     void Login(::google::protobuf::RpcController *controller,
                        const ::fixbug::LoginRequest *request,
                        ::fixbug::LoginResponse *response,
-                       ::google::protobuf::Closure *done)
+                       ::google::protobuf::Closure *done) override
     {
         // 网络层负责数据传输，而应用层只关注数据内容
         std::string name = request->name();         
@@ -40,6 +47,23 @@ public:
         response->set_success(login_result);
 
         // 执行回调操作
+        done->Run();
+    }
+
+    void Register(::google::protobuf::RpcController* controller,
+                       const ::fixbug::RegisterRequest* request,
+                       ::fixbug::RegisterResponse* response,
+                       ::google::protobuf::Closure* done) override
+    {
+        uint32_t id = request->id();
+        std::string name = request->name();
+        std::string pwd= request->pwd();
+
+        bool register_result = Register(id, name ,pwd);
+
+        response->mutable_result()->set_errcode(1);
+        response->mutable_result()->set_errmsg(" do register failed !");
+
         done->Run();
     }
 };
