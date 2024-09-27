@@ -140,16 +140,29 @@ void RpcProvider::OnMessage(const muduo::net::TcpConnectionPtr &conn, muduo::net
     ::google::protobuf::Message *response = service->GetResponsePrototype(method).New();
 
     // 给下面的method方法的调用，绑定一个Closure的回调函数
-    ::google::protobuf::Closure *done = ::google::protobuf::NewCallback<RpcProvider,
-                                                                        const muduo::net::TcpConnectionPtr &,
-                                                                        google::protobuf::Message *>(this,
-                                                                                                     &RpcProvider::SendRpcResponse,
-                                                                                                     conn, response);
-
-    // 在框架上根据远端rpc请求，调用当前rpc节点上发布的方法
+    google::protobuf::Closure *done = google::protobuf::NewCallback<RpcProvider,
+                                                                    const muduo::net::TcpConnectionPtr &,
+                                                                    google::protobuf::Message *>(this,
+                                                                                                &RpcProvider::SendRpcResponse,
+                                                                                                conn, response);
+    // 在框架上根据远端的rpc调用请求，调用当前rpc节点上发布的方法
     service->CallMethod(method, nullptr, request, response, done);
 }
 
-void RpcProvider::SendRpcResponse(const muduo::net::TcpConnection &conn, ::google::protobuf::Message *response)
+void RpcProvider::SendRpcResponse(const muduo::net::TcpConnectionPtr &conn, ::google::protobuf::Message *response)
 {
+    // 将response内容序列化
+    std::string response_str;
+    if(response->SerializeToString(&response_str))
+    {
+        // 序列化成功，则将rpc方法执行结果发送给调用方
+        conn->send(response_str);
+    }
+    else
+    {
+        // 序列化失败
+        std::cout << "serialize response_str error !" << std::endl;
+    }
+
+    conn->shutdown();       // 模拟http短链接服务，由rpcprovider主动断开链接
 }

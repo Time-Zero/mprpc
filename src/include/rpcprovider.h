@@ -11,6 +11,40 @@
 #include <string>
 #include <unordered_map>
 
+
+// 一个重写的protobuf的Closure版本，使用C++11特性，接受所有可调用对象
+namespace google
+{
+    namespace protobuf
+    {
+        class Callable : public Closure
+        {
+            using callable_t = std::function<void()>;
+
+            public:
+                Callable(callable_t c, bool b) : callable_(c), self_delete_(b) {}
+
+                virtual ~Callable() override = default;
+
+                void Run() override
+                {
+                    callable_();
+                    if(self_delete_) delete this;
+                }
+
+            private:
+                callable_t callable_;
+                bool self_delete_;
+        };
+
+        template<typename Arg1>
+        inline Closure* NewCallBack(std::function<void()> func)
+        {
+            return new Callable(func, false);
+        }
+    }
+}
+
 // 框架提供的，专门负责发布rpc服务的网络对象类
 class RpcProvider
 {
@@ -27,7 +61,7 @@ private:
     // 已经建立连接的读写事件回调
     void OnMessage(const muduo::net::TcpConnectionPtr &, muduo::net::Buffer *, muduo::Timestamp);
     // Closure回调操作，用于序列化Rpc的响应和使用网络发送
-    void SendRpcResponse(const muduo::net::TcpConnection &, ::google::protobuf::Message *);
+    void SendRpcResponse(const muduo::net::TcpConnectionPtr &, ::google::protobuf::Message *);
 
 private:
     // 组合EventLoop
