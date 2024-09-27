@@ -1,7 +1,6 @@
 #include <iostream>
 #include "mprpcapplication.h"
 #include "friend.pb.h"
-#include "mprpcchannel.h"
 
 int main(int argc, char **argv)
 {
@@ -13,11 +12,18 @@ int main(int argc, char **argv)
     fixbug::GetFriendsListRequest request;       // rpc 请求
     request.set_userid(2);  
     fixbug::GetFriendsListResponse response;     // rpc响应
+    MprpcController controller;
 
-    stub.GetFriendsList(nullptr, &request, &response, nullptr);
+    stub.GetFriendsList(&controller, &request, &response, nullptr);
 
     // 一次rpc调用完成，读取调用的结果
-    if(response.result().errcode() == 0)
+    if(controller.Failed())
+    {
+        std::cout << controller.ErrorText() << std::endl;
+    }
+    else
+    {
+        if(response.result().errcode() == 0)
     {
         std::cout << "rpc getfriendlist response! " << std::endl;
         uint32_t friend_size = response.friends_size();
@@ -28,5 +34,6 @@ int main(int argc, char **argv)
     else
     {
         std::cout << "rpc login response error: " << response.result().errmsg() << std::endl;
+    }
     }
 }
