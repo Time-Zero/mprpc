@@ -3,6 +3,7 @@
 #include <time.h>
 #include <sstream>
 #include <iostream>
+#include <thread>
 
 Logger &Logger::GetInstance()
 {
@@ -16,7 +17,7 @@ void Logger::SetLogLevel(uint32_t log_level)
     m_loglevel_ = log_level;
 }
 
-void Logger::Log(std::string &msg)
+void Logger::Log(std::string msg)
 {
     m_lckque_.Push(msg);
 }
@@ -43,7 +44,8 @@ Logger::Logger() : m_loglevel_(LogLevel::INFO)
 
             std::string msg = m_lckque_.Pop();
             std::stringstream ss_log;
-            ss_log << now_tm->tm_hour << ":" << now_tm->tm_min << ":" << now_tm->tm_sec << " => " << msg;
+            ss_log << now_tm->tm_hour << ":" << now_tm->tm_min << ":" 
+            << now_tm->tm_sec << " => " << msg << std::endl;
 
             fputs(ss_log.str().c_str(), pf);
             fclose(pf);

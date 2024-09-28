@@ -9,7 +9,7 @@ class LockQueue
 {
 public:
     void Push(const T &data);
-    T& Pop();
+    T Pop();
 
 private:
     std::queue<T> m_queue_;
@@ -17,13 +17,26 @@ private:
     std::condition_variable m_cv_;
 };
 
+// 多个生产者线程
 template <typename T>
 inline void LockQueue<T>::Push(const T &data)
 {
+    std::lock_guard<std::mutex> lck(m_mtx_);
+    m_queue_.push(data);
+    m_cv_.notify_one();     // 只有一个写线程，所以只需要唤醒一个线程
 }
 
+// 只有一个消费者线程
 template <typename T>
-inline T &LockQueue<T>::Pop()
+inline T LockQueue<T>::Pop()
 {
-    // TODO: 在此处插入 return 语句
+    std::unique_lock<std::mutex> lck(m_mtx_);
+    while(m_queue_.empty())
+    {
+        m_cv_.wait(lck);
+    }
+
+    T data = m_queue_.front();
+    m_queue_.pop();
+    return std::move(data);
 }
