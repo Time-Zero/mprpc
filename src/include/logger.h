@@ -41,6 +41,7 @@ private:
     ss << " [INFO] " << buf;                                                   \
     logger.Log(ss.str());                                                      \
   } while (0);
+  
 
 #define LOG_ERROR(logmsgformat, ...)                                           \
   do {                                                                         \
