@@ -3,7 +3,6 @@
 #include <cstdint>
 #include <cstdio>
 #include <mutex>
-#include <sstream>
 
 enum LogLevel {
   INFO,
@@ -41,7 +40,7 @@ private:
     ss << " [INFO] " << buf;                                                   \
     logger.Log(ss.str());                                                      \
   } while (0);
-  
+
 
 #define LOG_ERROR(logmsgformat, ...)                                           \
   do {                                                                         \

@@ -33,7 +33,7 @@ Logger::Logger() : m_loglevel_(LogLevel::INFO)
             tm* now_tm = localtime(&now);
 
             std::stringstream ss;
-            ss << now_tm->tm_year + 1900 << "-" << now_tm->tm_mon + 1 << "-" << now_tm->tm_mday << "-log.txt";
+            ss << now_tm->tm_year + 1900 << "-" << now_tm->tm_mon + 1 << "-" << now_tm->tm_mday << "-log.log";
 
             FILE *pf = fopen(ss.str().c_str(), "a+");
             if(pf == nullptr)
