@@ -1,6 +1,7 @@
 #include "mprpcchannel.h"
 #include "zookeeperutil.h"
 #include <cstdint>
+#include <memory>
 #include <string>
 
 
@@ -66,20 +67,6 @@ void MprpcChannel::CallMethod(const ::google::protobuf::MethodDescriptor *method
     // std::cout << "args_str: " << args_str << std::endl;
     // std::cout << "====================================================" << std::endl;
 
-    // TODO: 模块化发送功能，并且使用智能指针并定义自定义删除器维护socket连接
-    // 使用tcp，完成rpc方法的远程调用
-    int client_fd = socket(AF_INET, SOCK_STREAM, 0);
-    if (client_fd == -1)
-    {
-        std::stringstream ss;
-        ss << "create socket error, errno: " << errno;
-        controller->SetFailed(ss.str());
-        return;
-    }
-
-    // std::string ip = MprpcApplication::GetInstance().GetConfig().Load("rpcserver_ip");
-    // uint16_t port = stoi(MprpcApplication::GetInstance().GetConfig().Load("rpcserver_port"));
-
     // 从zk中获取需要的服务的地址 
     ZkClient zkCli;
     zkCli.Start();
@@ -101,6 +88,17 @@ void MprpcChannel::CallMethod(const ::google::protobuf::MethodDescriptor *method
     std::string ip = host_data.substr(0,idx);
     uint16_t port = std::stoi(host_data.substr(idx + 1, host_data.size() - idx));
 
+    // 使用tcp，完成rpc方法的远程调用
+    int client_fd = socket(AF_INET, SOCK_STREAM, 0);
+    std::unique_ptr<int, RpcChannelSckDel> client_fd_ptr(&client_fd);
+    if (client_fd == -1)
+    {
+        std::stringstream ss;
+        ss << "create socket error, errno: " << errno;
+        controller->SetFailed(ss.str());
+        return;
+    }
+
     struct sockaddr_in server_addr;
     memset(&server_addr, 0, sizeof(server_addr));
     server_addr.sin_family = AF_INET;
@@ -110,8 +108,6 @@ void MprpcChannel::CallMethod(const ::google::protobuf::MethodDescriptor *method
     // 连接rpc节点
     if (connect(client_fd, (struct sockaddr *)&server_addr, sizeof(server_addr)) == -1)
     {
-        close(client_fd);
-
         std::stringstream ss;
         ss << "connect error ! error: " << errno;
         controller->SetFailed(ss.str());
@@ -121,8 +117,6 @@ void MprpcChannel::CallMethod(const ::google::protobuf::MethodDescriptor *method
     // 发送rpc报文
     if (send(client_fd, rpc_send_str.c_str(), rpc_send_str.size(), 0) == -1)
     {
-        close(client_fd);
-
         std::stringstream ss;
         ss << "send error! errno: " << errno;
         controller->SetFailed(ss.str());
@@ -134,8 +128,6 @@ void MprpcChannel::CallMethod(const ::google::protobuf::MethodDescriptor *method
     uint32_t recv_size = 0;
     if ((recv_size = recv(client_fd, recv_buf, sizeof(recv_buf), 0)) == -1)
     {
-        close(client_fd);
-
         std::stringstream ss;
         ss << "recv error! errno: " << errno;
         controller->SetFailed(ss.str());
@@ -145,13 +137,9 @@ void MprpcChannel::CallMethod(const ::google::protobuf::MethodDescriptor *method
     // 反序列化
     if (!response->ParseFromArray(recv_buf, recv_size))
     {
-        close(client_fd);
-
         std::stringstream ss;
         ss << "parse error! response_str: " << recv_buf;
         controller->SetFailed(ss.str());
         return;
     }
-
-    close(client_fd);
 }

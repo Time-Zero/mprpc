@@ -1,4 +1,5 @@
 #pragma once
+#include <cstddef>
 #include <google/protobuf/service.h>
 #include <google/protobuf/descriptor.h>
 #include <google/protobuf/message.h>
@@ -22,6 +23,17 @@ public:
                         ::google::protobuf::RpcController* controller, const ::google::protobuf::Message* request,
                         ::google::protobuf::Message* response, ::google::protobuf::Closure* done) override;
 
-private:
+};
 
+
+// 客户端socket智能指针删除器
+struct RpcChannelSckDel
+{
+    void operator()(int* sock_fd)
+    {
+        if(sock_fd != nullptr && *sock_fd != -1)       // 如果socket有效
+        {
+            close(*sock_fd);
+        }
+    }
 };
