@@ -2,7 +2,7 @@
 #include <string>
 #include "../user.pb.h"
 #include "mprpcapplication.h"
-#include "rpcprovider.h"
+#include "mprpcprovider.h"
 
 /*
     这是一个把本地服务发布为一个Rpc服务的标准动作

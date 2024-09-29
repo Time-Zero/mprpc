@@ -86,6 +86,11 @@ void ZkClient::Create(const char *path, const char *data, int datalen, int state
     }
 }
 
+void ZkClient::Create(const std::string& path, const std::string& data, int datalen, int state)
+{
+    Create(path.c_str(), data.c_str(), datalen, state);
+}
+
 std::string ZkClient::GetData(const char *path)
 {
     char buffer[64];

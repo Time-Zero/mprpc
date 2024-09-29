@@ -1,5 +1,8 @@
 #include "mprpcchannel.h"
+#include "zookeeperutil.h"
+#include <cstdint>
 #include <string>
+
 
 /*
 rpc调用协议为:
@@ -55,13 +58,13 @@ void MprpcChannel::CallMethod(const ::google::protobuf::MethodDescriptor *method
     rpc_send_str += args_str;                                     // 参数
 
     // 打印调试信息
-    std::cout << "====================================================" << std::endl;
-    std::cout << "header_size: " << header_size << std::endl;
-    std::cout << "service_name: " << service_name << std::endl;
-    std::cout << "method_name: " << method_name << std::endl;
-    std::cout << "args_size: " << args_size << std::endl;
-    std::cout << "args_str: " << args_str << std::endl;
-    std::cout << "====================================================" << std::endl;
+    // std::cout << "====================================================" << std::endl;
+    // std::cout << "header_size: " << header_size << std::endl;
+    // std::cout << "service_name: " << service_name << std::endl;
+    // std::cout << "method_name: " << method_name << std::endl;
+    // std::cout << "args_size: " << args_size << std::endl;
+    // std::cout << "args_str: " << args_str << std::endl;
+    // std::cout << "====================================================" << std::endl;
 
     // TODO: 模块化发送功能，并且使用智能指针并定义自定义删除器维护socket连接
     // 使用tcp，完成rpc方法的远程调用
@@ -74,8 +77,29 @@ void MprpcChannel::CallMethod(const ::google::protobuf::MethodDescriptor *method
         return;
     }
 
-    std::string ip = MprpcApplication::GetInstance().GetConfig().Load("rpcserver_ip");
-    uint16_t port = stoi(MprpcApplication::GetInstance().GetConfig().Load("rpcserver_port"));
+    // std::string ip = MprpcApplication::GetInstance().GetConfig().Load("rpcserver_ip");
+    // uint16_t port = stoi(MprpcApplication::GetInstance().GetConfig().Load("rpcserver_port"));
+
+    // 从zk中获取需要的服务的地址 
+    ZkClient zkCli;
+    zkCli.Start();
+    // /serivce_name/method_name
+    std::string method_path = "/" + service_name + "/" + method_name;
+    std::string host_data = zkCli.GetData(method_path.c_str());
+    if(host_data == "")
+    {
+        controller->SetFailed(method_path + " is not exist!");
+        return;
+    }
+    
+    int idx = host_data.find(":");
+    if(idx == -1)
+    {
+        controller->SetFailed(method_path + " address is invaild");
+        return;
+    }
+    std::string ip = host_data.substr(0,idx);
+    uint16_t port = std::stoi(host_data.substr(idx + 1, host_data.size() - idx));
 
     struct sockaddr_in server_addr;
     memset(&server_addr, 0, sizeof(server_addr));
